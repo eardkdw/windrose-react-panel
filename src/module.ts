@@ -57,5 +57,10 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
           },
         ],
       },
+    })
+    .addNumberInput({
+      path: 'numberOfSegments',
+      name: 'Number of Segments',
+      defaultValue: 16,
     });
 });
