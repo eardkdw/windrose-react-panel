@@ -6,4 +6,5 @@ export interface SimpleOptions {
   showSeriesCount: boolean;
   seriesCountSize: SeriesSize;
   palette: Palette;
+  numberOfSegments: number;
 }

@@ -12,9 +12,17 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const frame = data.series[0];
 
-  const angles = frame.fields.find(field => field.name === 'windDir');
-  const speeds = frame.fields.find(field => field.name === 'windSpeed');
+  const theta = frame.fields.find(field => field.name === 'windDir');
+  const r = frame.fields.find(field => field.name === 'windSpeed');
 
+  //check there are data
+  if (!data.series?.length || !theta || !r) {
+    return (
+      <div className="panel-empty">
+        <p>{'No data found in response'}</p>
+      </div>
+    );
+  }
   const size = (Math.min(width, height) / 2) * 0.9;
 
   let palette: string;
@@ -30,7 +38,22 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       break;
   }
 
-  console.log([angles, speeds]);
+  //draw windrose
+  let num_points = theta.values.length;
+  let points_on_dir: any[] = [];
+
+  let angle = 360 / options.numberOfSegments;
+
+  for (let i = 0; i < options.numberOfSegments; i++) {
+    points_on_dir.push([]);
+  }
+
+  for (let p = 0; p < num_points; p++) {
+    let angle_idx = Math.floor((theta.values.get(p) / angle + 1.5) % options.numberOfSegments);
+    points_on_dir[angle_idx].push(r.values.get(p));
+  }
+
+  console.log([angle, theta, r]);
 
   return (
     <div
