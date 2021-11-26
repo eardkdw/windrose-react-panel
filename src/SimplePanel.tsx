@@ -10,6 +10,13 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   const theme = useTheme();
   const styles = getStyles();
 
+  const frame = data.series[0];
+
+  const angles = frame.fields.find(field => field.name === 'windDir');
+  const speeds = frame.fields.find(field => field.name === 'windSpeed');
+
+  const size = (Math.min(width, height) / 2) * 0.9;
+
   let palette: string;
   switch (options.palette) {
     case 'reds':
@@ -22,6 +29,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       palette = theme.palette.blue95;
       break;
   }
+
+  console.log([angles, speeds]);
 
   return (
     <div
@@ -42,7 +51,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
       >
         <g>
-          <circle style={{ fill: palette }} r={100} />
+          <circle style={{ fill: palette }} r={size} />
         </g>
       </svg>
 
