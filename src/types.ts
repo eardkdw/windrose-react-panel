@@ -7,4 +7,5 @@ export interface SimpleOptions {
   seriesCountSize: SeriesSize;
   palette: Palette;
   numberOfSegments: number;
+  windSpeedInterval: number;
 }

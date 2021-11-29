@@ -48,12 +48,56 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     points_on_dir.push([]);
   }
 
+  let angles: number[] = [];
+  let rs: number[] = [];
   for (let p = 0; p < num_points; p++) {
     let angle_idx = Math.floor((theta.values.get(p) / angle + 1.5) % options.numberOfSegments);
     points_on_dir[angle_idx].push(r.values.get(p));
+
+    //read the dataframe values, and put them into a number[] array
+    //so subsequent functions are happy with the type
+    angles.push(theta.values.get(p));
+    rs.push(r.values.get(p));
   }
 
-  console.log([angle, theta, r]);
+  // compute m levels for all n directions
+  let petals: number[][] = [];
+
+  // find max wind speed and speed levels
+  let max_speed = Math.max(...rs);
+  let bin_num = Math.ceil(max_speed / options.windSpeedInterval);
+  let speed_levels = [];
+  for (let bin_idx = 0; bin_idx <= bin_num; bin_idx++) {
+    let level = options.windSpeedInterval * bin_idx;
+    speed_levels.push(level);
+  }
+
+  // prepare base lengths
+  let base_lengths: number[] = [];
+  base_lengths.length = options.numberOfSegments;
+  base_lengths.fill(0);
+
+  // compute the petal lengths
+  for (let bin_idx = 0; bin_idx < bin_num; bin_idx++) {
+    petals.push([]);
+    for (let angle_idx = 0; angle_idx < options.numberOfSegments; angle_idx++) {
+      let pts = points_on_dir[angle_idx];
+      let bin_counter = 0;
+
+      for (let idx = 0; idx < pts.length; idx++) {
+        if (pts[idx] >= speed_levels[bin_idx] && pts[idx] < speed_levels[bin_idx + 1]) {
+          bin_counter++;
+        }
+      }
+
+      let total_length = pts.length / num_points;
+      let delta_length = (bin_counter / pts.length) * total_length;
+      base_lengths[angle_idx] += 100 * delta_length;
+      petals[bin_idx].push(base_lengths[angle_idx]);
+    }
+  }
+
+  console.log([angle, bin_num, speed_levels, petals]);
 
   return (
     <div
@@ -74,7 +118,15 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
       >
         <g>
-          <circle style={{ fill: palette }} r={size} />
+          <circle style={{ fill: 'grey' }} r={size} />
+          <circle
+            r={size / 2}
+            style={{ fill: 'transparent' }}
+            stroke={palette}
+            stroke-width={size / 3}
+            stroke-dasharray={`${(90 / 360) * size * 3.14159} ${size * 3.14159}`}
+            transform="rotate (-90)"
+          />
         </g>
       </svg>
 

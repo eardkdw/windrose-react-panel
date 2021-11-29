@@ -62,5 +62,10 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       path: 'numberOfSegments',
       name: 'Number of Segments',
       defaultValue: 16,
+    })
+    .addNumberInput({
+      path: 'windSpeedInterval',
+      name: 'Wind Speed Interval',
+      defaultValue: 2,
     });
 });
