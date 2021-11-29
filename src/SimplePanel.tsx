@@ -25,16 +25,22 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   }
   const size = (Math.min(width, height) / 2) * 0.9;
 
-  let palette: string;
+  let palette: string[] = [];
   switch (options.palette) {
     case 'reds':
-      palette = theme.palette.redBase;
+      for (let j = 0; j < options.numberOfSegments; j++) {
+        palette.push('rgb(' + (255 * (1 - j / (options.numberOfSegments - 1))).toString() + ',0,0)');
+      }
       break;
     case 'greens':
-      palette = theme.palette.greenBase;
+      for (let j = 0; j < options.numberOfSegments; j++) {
+        palette.push('rgb(0,' + (255 * (1 - j / (options.numberOfSegments - 1))).toString() + ',0)');
+      }
       break;
     case 'blues':
-      palette = theme.palette.blue95;
+      for (let j = 0; j < options.numberOfSegments; j++) {
+        palette.push('rgb(0,0,' + (255 * (1 - j / (options.numberOfSegments - 1))).toString() + ')');
+      }
       break;
   }
 
@@ -48,7 +54,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     points_on_dir.push([]);
   }
 
-  let angles: number[] = [];
+  let thetas: number[] = [];
   let rs: number[] = [];
   for (let p = 0; p < num_points; p++) {
     let angle_idx = Math.floor((theta.values.get(p) / angle + 1.5) % options.numberOfSegments);
@@ -56,7 +62,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
     //read the dataframe values, and put them into a number[] array
     //so subsequent functions are happy with the type
-    angles.push(theta.values.get(p));
+    thetas.push(theta.values.get(p));
     rs.push(r.values.get(p));
   }
 
@@ -92,7 +98,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
       let total_length = pts.length / num_points;
       let delta_length = (bin_counter / pts.length) * total_length;
-      base_lengths[angle_idx] += 100 * delta_length;
+      base_lengths[angle_idx] += size * delta_length;
       petals[bin_idx].push(base_lengths[angle_idx]);
     }
   }
@@ -119,14 +125,26 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       >
         <g>
           <circle style={{ fill: 'grey' }} r={size} />
-          <circle
-            r={size / 2}
-            style={{ fill: 'transparent' }}
-            stroke={palette}
-            stroke-width={size / 3}
-            stroke-dasharray={`${(90 / 360) * size * 3.14159} ${size * 3.14159}`}
-            transform="rotate (-90)"
-          />
+          {petals.map((petal, idx1) =>
+            petal.map((segment, idx2) => {
+              //sum over previous segment lengths
+              let radius = 0;
+              petals.slice(0, idx1).forEach(function(each) {
+                radius += each[idx2];
+              });
+              radius += segment / 2;
+              console.log([idx2, radius]);
+              return (
+                <circle
+                  r={radius}
+                  style={{ fill: 'transparent', transform: 'rotate(' + (angle * idx2 + -90) + 'deg)' }}
+                  stroke={palette[idx1]}
+                  stroke-width={segment}
+                  stroke-dasharray={`${(angle / 360) * radius * 3.14159} ${radius * 3.14159}`}
+                />
+              );
+            })
+          )}
         </g>
       </svg>
 
