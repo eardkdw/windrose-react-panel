@@ -96,14 +96,17 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         }
       }
 
-      let total_length = pts.length / num_points;
-      let delta_length = (bin_counter / pts.length) * total_length;
-      base_lengths[angle_idx] += size * delta_length;
-      petals[bin_idx].push(base_lengths[angle_idx]);
+      let total_length = pts.length / num_points; //proportion of total points in this petal
+      let delta_length = (bin_counter / pts.length) * total_length; //proportion of petal length in this bin
+      base_lengths[angle_idx] += delta_length;
+      //petals[bin_idx].push(base_lengths[angle_idx]);
+      petals[bin_idx].push(delta_length);
     }
   }
 
-  console.log([angle, bin_num, speed_levels, petals]);
+  let petal_max_length = Math.max(...base_lengths);
+
+  console.log([angle, petals]);
 
   return (
     <div
@@ -124,7 +127,9 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
       >
         <g>
-          <circle style={{ fill: 'grey' }} r={size} />
+          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size} />
+        </g>
+        <g>
           {petals.map((petal, idx1) =>
             petal.map((segment, idx2) => {
               //sum over previous segment lengths
@@ -133,14 +138,15 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                 radius += each[idx2];
               });
               radius += segment / 2;
-              console.log([idx2, radius]);
+              radius = (radius / petal_max_length) * size; //so the longest one is at the border
               return (
                 <circle
                   r={radius}
+                  className={`petal${idx2}`}
                   style={{ fill: 'transparent', transform: 'rotate(' + (angle * idx2 + -90) + 'deg)' }}
                   stroke={palette[idx1]}
-                  stroke-width={segment}
-                  stroke-dasharray={`${(angle / 360) * radius * 3.14159} ${radius * 3.14159}`}
+                  stroke-width={(segment / petal_max_length) * size}
+                  stroke-dasharray={`${(angle / 360) * radius * 2 * 3.14159} ${radius * 2 * 3.14159}`}
                 />
               );
             })
