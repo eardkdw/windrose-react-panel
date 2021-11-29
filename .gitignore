@@ -28,4 +28,7 @@ e2e-results/
 
 # Editors
 .idea
+*.swp
 
+#github
+.github
