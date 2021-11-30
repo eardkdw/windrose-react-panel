@@ -54,25 +54,31 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     points_on_dir.push([]);
   }
 
-  let thetas: number[] = [];
   let rs: number[] = [];
   for (let p = 0; p < num_points; p++) {
-    let angle_idx = Math.floor((theta.values.get(p) / angle + 1.5) % options.numberOfSegments);
+    let angle_idx = Math.floor((theta.values.get(p) / angle + 0.5) % options.numberOfSegments);
     points_on_dir[angle_idx].push(r.values.get(p));
 
     //read the dataframe values, and put them into a number[] array
     //so subsequent functions are happy with the type
-    thetas.push(theta.values.get(p));
     rs.push(r.values.get(p));
   }
+
+  //diagnostic
+  let deg_to_seg: number[] = [];
+  for (let q = 0; q < 360; q++) {
+    deg_to_seg[q] = Math.floor((q / angle + 1.5) % options.numberOfSegments);
+  }
+  console.log(deg_to_seg);
+
+  // find max wind speed and speed levels
+  let max_speed = Math.max(...rs);
+  let bin_num = Math.ceil(max_speed / options.windSpeedInterval);
 
   // compute m levels for all n directions (petals is an array of number arrays
   // with bin_num elements, each with numberOfSegments elements)
   let petals: number[][] = [];
 
-  // find max wind speed and speed levels
-  let max_speed = Math.max(...rs);
-  let bin_num = Math.ceil(max_speed / options.windSpeedInterval);
   let speed_levels = [];
   for (let bin_idx = 0; bin_idx <= bin_num; bin_idx++) {
     let level = options.windSpeedInterval * bin_idx;
