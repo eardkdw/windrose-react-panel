@@ -56,20 +56,13 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   let rs: number[] = [];
   for (let p = 0; p < num_points; p++) {
-    let angle_idx = Math.floor((theta.values.get(p) / angle + 0.5) % options.numberOfSegments);
+    let angle_idx = Math.floor(theta.values.get(p) / angle + 0.5) % options.numberOfSegments;
     points_on_dir[angle_idx].push(r.values.get(p));
 
     //read the dataframe values, and put them into a number[] array
     //so subsequent functions are happy with the type
     rs.push(r.values.get(p));
   }
-
-  //diagnostic
-  let deg_to_seg: number[] = [];
-  for (let q = 0; q < 360; q++) {
-    deg_to_seg[q] = Math.floor((q / angle + 1.5) % options.numberOfSegments);
-  }
-  console.log(deg_to_seg);
 
   // find max wind speed and speed levels
   let max_speed = Math.max(...rs);
@@ -113,8 +106,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   let petal_max_length = Math.max(...base_lengths);
 
-  console.log([angle, petals]);
-
   return (
     <div
       className={cx(
@@ -154,10 +145,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                 return (
                   <circle
                     r={radius}
-                    className={`petal${idx2}`}
+                    className={`petal${idx2}_${points_on_dir[idx2].length}`}
                     style={{
                       fill: 'transparent',
-                      transform: 'rotate(' + (angle * (idx2 - 1) - angle / 2 + -90) + 'deg)',
+                      transform: 'rotate(' + (angle * idx2 - angle / 2 + -90) + 'deg)',
                     }}
                     stroke={palette[idx1]}
                     stroke-width={(segment / petal_max_length) * size}
