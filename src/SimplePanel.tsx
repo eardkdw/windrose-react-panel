@@ -75,11 +75,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   // with bin_num elements, each with numberOfSegments elements)
   let petals: number[][] = [];
 
-  let speed_levels = [];
+  let speed_levels: number[] = [];
   for (let bin_idx = 0; bin_idx <= bin_num; bin_idx++) {
     let level = options.windSpeedInterval * bin_idx;
     speed_levels.push(level);
   }
+  console.log({ max_speed: max_speed, bin_num: bin_num, speed_levels: speed_levels });
 
   // prepare base lengths
   let base_lengths: number[] = [];
@@ -162,6 +163,33 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
             </g>
           );
         })}
+        <g id="legend">
+          {speed_levels.slice(0, bin_num).map((level, idx3) => (
+            <g id={`legend_${idx3}`}>
+              <rect
+                x={width * 0.35}
+                y={-(height * 0.5) + height * 0.05 * idx3}
+                width={width * 0.05}
+                height={height * 0.05}
+                style={{
+                  fill: palette[idx3],
+                  strokeWidth: '1',
+                  stroke: 'rgb(0,0,0)',
+                }}
+              />
+              <text
+                x={width * 0.35 + width * 0.055}
+                y={-(height * 0.5) + height * 0.05 * idx3 + height * 0.0285}
+                style={{
+                  fill: 'white',
+                }}
+              >
+                {level} &lt; <tspan font-style="italic">v</tspan> &lt; {speed_levels[idx3 + 1]}
+              </text>
+            </g>
+          ))}
+          ;
+        </g>
       </svg>
 
       <div className={styles.textBox}>
