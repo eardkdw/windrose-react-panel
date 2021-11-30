@@ -126,32 +126,34 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
       >
-        <g>
+        <g id="lines">
           <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size} />
         </g>
-        <g>
-          {petals.map((petal, idx1) =>
-            petal.map((segment, idx2) => {
-              //sum over previous segment lengths
-              let radius = 0;
-              petals.slice(0, idx1).forEach(function(each) {
-                radius += each[idx2];
-              });
-              radius += segment / 2;
-              radius = (radius / petal_max_length) * size; //so the longest one is at the border
-              return (
-                <circle
-                  r={radius}
-                  className={`petal${idx2}`}
-                  style={{ fill: 'transparent', transform: 'rotate(' + (angle * idx2 + -90) + 'deg)' }}
-                  stroke={palette[idx1]}
-                  stroke-width={(segment / petal_max_length) * size}
-                  stroke-dasharray={`${(angle / 360) * radius * 2 * 3.14159} ${radius * 2 * 3.14159}`}
-                />
-              );
-            })
-          )}
-        </g>
+        {petals.map((petal, idx1) => {
+          return (
+            <g id={`bin${idx1}`}>
+              {petal.map((segment, idx2) => {
+                //sum over previous segment lengths
+                let radius = 0;
+                petals.slice(0, idx1).forEach(function(each) {
+                  radius += each[idx2];
+                });
+                radius += segment / 2;
+                radius = (radius / petal_max_length) * size; //so the longest one is at the border
+                return (
+                  <circle
+                    r={radius}
+                    className={`petal${idx2}`}
+                    style={{ fill: 'transparent', transform: 'rotate(' + (angle * idx2 - angle / 2 + -90) + 'deg)' }}
+                    stroke={palette[idx1]}
+                    stroke-width={(segment / petal_max_length) * size}
+                    stroke-dasharray={`${(angle / 360) * radius * 2 * 3.14159} ${radius * 2 * 3.14159}`}
+                  />
+                );
+              })}
+            </g>
+          );
+        })}
       </svg>
 
       <div className={styles.textBox}>
