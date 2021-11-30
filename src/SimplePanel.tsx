@@ -25,25 +25,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   }
   const size = (Math.min(width, height) / 2) * 0.9;
 
-  let palette: string[] = [];
-  switch (options.palette) {
-    case 'reds':
-      for (let j = 0; j < options.numberOfSegments; j++) {
-        palette.push('rgb(' + (255 * (1 - j / (options.numberOfSegments - 1))).toString() + ',0,0)');
-      }
-      break;
-    case 'greens':
-      for (let j = 0; j < options.numberOfSegments; j++) {
-        palette.push('rgb(0,' + (255 * (1 - j / (options.numberOfSegments - 1))).toString() + ',0)');
-      }
-      break;
-    case 'blues':
-      for (let j = 0; j < options.numberOfSegments; j++) {
-        palette.push('rgb(0,0,' + (255 * (1 - j / (options.numberOfSegments - 1))).toString() + ')');
-      }
-      break;
-  }
-
   //draw windrose
   let num_points = theta.values.length;
   let points_on_dir: any[] = [];
@@ -70,6 +51,26 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   // find max wind speed and speed levels
   let max_speed = Math.max(...rs);
   let bin_num = Math.ceil(max_speed / options.windSpeedInterval);
+
+  //palette
+  let palette: string[] = [];
+  switch (options.palette) {
+    case 'reds':
+      for (let j = 0; j < bin_num; j++) {
+        palette.push('rgb(' + (255 * (1 - j / (bin_num - 1))).toString() + ',0,0)');
+      }
+      break;
+    case 'greens':
+      for (let j = 0; j < bin_num; j++) {
+        palette.push('rgb(0,' + (255 * (1 - j / (bin_num - 1))).toString() + ',0)');
+      }
+      break;
+    case 'blues':
+      for (let j = 0; j < bin_num; j++) {
+        palette.push('rgb(0,0,' + (255 * (1 - j / (bin_num - 1))).toString() + ')');
+      }
+      break;
+  }
 
   // compute m levels for all n directions (petals is an array of number arrays
   // with bin_num elements, each with numberOfSegments elements)
