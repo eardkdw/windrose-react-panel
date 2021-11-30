@@ -56,12 +56,15 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   let rs: number[] = [];
   for (let p = 0; p < num_points; p++) {
-    let angle_idx = Math.floor(theta.values.get(p) / angle + 0.5) % options.numberOfSegments;
-    points_on_dir[angle_idx].push(r.values.get(p));
+    //Ignore entries where r is zero as theta is undefined anyway
+    if (r.values.get(p) > 0) {
+      let angle_idx = Math.floor(theta.values.get(p) / angle + 0.5) % options.numberOfSegments;
+      points_on_dir[angle_idx].push(r.values.get(p));
 
-    //read the dataframe values, and put them into a number[] array
-    //so subsequent functions are happy with the type
-    rs.push(r.values.get(p));
+      //read the dataframe values, and put them into a number[] array
+      //so subsequent functions are happy with the type
+      rs.push(r.values.get(p));
+    }
   }
 
   // find max wind speed and speed levels
