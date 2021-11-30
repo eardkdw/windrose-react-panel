@@ -66,7 +66,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     rs.push(r.values.get(p));
   }
 
-  // compute m levels for all n directions
+  // compute m levels for all n directions (petals is an array of number arrays
+  // with bin_num elements, each with numberOfSegments elements)
   let petals: number[][] = [];
 
   // find max wind speed and speed levels
@@ -128,6 +129,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       >
         <g id="lines">
           <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size} />
+          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.8} />
+          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.6} />
+          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.4} />
+          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.2} />
         </g>
         {petals.map((petal, idx1) => {
           return (
@@ -144,7 +149,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                   <circle
                     r={radius}
                     className={`petal${idx2}`}
-                    style={{ fill: 'transparent', transform: 'rotate(' + (angle * idx2 - angle / 2 + -90) + 'deg)' }}
+                    style={{
+                      fill: 'transparent',
+                      transform: 'rotate(' + (angle * (idx2 - 1) - angle / 2 + -90) + 'deg)',
+                    }}
                     stroke={palette[idx1]}
                     stroke-width={(segment / petal_max_length) * size}
                     stroke-dasharray={`${(angle / 360) * radius * 2 * 3.14159} ${radius * 2 * 3.14159}`}
