@@ -11,28 +11,6 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       defaultValue: 'Default value of text input option',
     })
     .addRadio({
-      path: 'seriesCountSize',
-      defaultValue: 'sm',
-      name: 'Series counter size',
-      settings: {
-        options: [
-          {
-            value: 'sm',
-            label: 'Small',
-          },
-          {
-            value: 'md',
-            label: 'Medium',
-          },
-          {
-            value: 'lg',
-            label: 'Large',
-          },
-        ],
-      },
-      showIf: config => config.showSeriesCount,
-    })
-    .addRadio({
       path: 'palette',
       name: 'Palette',
       defaultValue: 'greens',
@@ -62,6 +40,19 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       path: 'windSpeedInterval',
       name: 'Wind Speed Interval',
       defaultValue: 2,
+    })
+    .addSelect({
+      path: 'speedUnit',
+      name: 'SpeedUnit',
+      defaultValue: 'ms¯¹',
+      settings: {
+        options: [
+          { value: 'ms¯¹', label: 'Metres per second' },
+          { value: 'kmh¯¹', label: 'Kilometres per hour' },
+          { value: 'mph', label: 'Miles per hour' },
+          { value: 'kts', label: 'Knots' },
+        ],
+      },
     })
     .addNumberInput({
       path: 'rotation',

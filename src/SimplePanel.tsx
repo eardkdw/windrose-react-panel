@@ -185,7 +185,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         <div>Text option value: {options.text}</div>
       </div>
       <div className={styles.legend}>
-        <h3>Speed / ms¯¹</h3>
+        <h3>Speed / {options.speedUnit}</h3>
         {speed_levels.slice(0, bin_num).map((level, level_idx) => {
           return (
             <div id={`legend_${level_idx}`} style={{ height: '4ex' }}>
@@ -250,7 +250,7 @@ const getStyles = stylesFactory(() => {
       display: inline-block;
       height: 100%;
       vertical-align: middle;
-      padding-left: 1en;
+      padding-left: 0.75em;
     `,
   };
 });
