@@ -111,6 +111,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   let petal_max_length = Math.max(...base_lengths);
 
+  const cardinals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
   return (
     <div
       className={cx(
@@ -130,11 +132,23 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
       >
         <g id="lines">
-          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size} />
-          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.8} />
-          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.6} />
-          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.4} />
-          <circle style={{ stroke: 'grey', strokeDasharray: '5 5', fill: 'transparent' }} r={size * 0.2} />
+          <circle className={styles.polarlines} r={size} />
+          <circle className={styles.polarlines} r={size * 0.8} />
+          <circle className={styles.polarlines} r={size * 0.6} />
+          <circle className={styles.polarlines} r={size * 0.4} />
+          <circle className={styles.polarlines} r={size * 0.2} />
+          {cardinals.map((cardinal, idxC) => {
+            return (
+              <line
+                x1="0"
+                y1={-size}
+                x2="0"
+                y2={size}
+                className={styles.polarlines}
+                style={{ transform: 'rotate(' + (360 / cardinals.length) * idxC + 'deg)' }}
+              />
+            );
+          })}
         </g>
         {petals.map((petal, idx1) => {
           return (
@@ -164,7 +178,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
             </g>
           );
         })}
-        <g id="legend">
+        <g id="windrose_legend">
           {speed_levels.slice(0, bin_num).map((level, idx3) => (
             <g id={`legend_${idx3}`}>
               <rect
@@ -185,7 +199,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                   fill: 'white',
                 }}
               >
-                {level} &lt; <tspan font-style="italic">v</tspan> &lt; {speed_levels[idx3 + 1]}
+                {level} ≤ <tspan font-style="italic">v</tspan> &lt; {speed_levels[idx3 + 1]}
               </text>
             </g>
           ))}
@@ -224,6 +238,11 @@ const getStyles = stylesFactory(() => {
       bottom: 0;
       left: 0;
       padding: 10px;
+    `,
+    polarlines: css`
+      stroke: grey;
+      stroke-dasharray: 5 5;
+      fill: transparent;
     `,
   };
 });
