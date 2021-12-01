@@ -8,4 +8,5 @@ export interface SimpleOptions {
   palette: Palette;
   numberOfSegments: number;
   windSpeedInterval: number;
+  rotation: number;
 }

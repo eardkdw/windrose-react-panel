@@ -136,22 +136,20 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           <circle className={styles.polarlines} r={size * 0.6} />
           <circle className={styles.polarlines} r={size * 0.4} />
           <circle className={styles.polarlines} r={size * 0.2} />
-          {cardinals.map((cardinal, idxC) => {
-            return (
-              <g style={{ transform: 'rotate(' + (360 / cardinals.length) * idxC + 'deg)' }}>
-                <line x1="0" y1={-size} x2="0" y2={size} className={styles.polarlines} />
-                <text
-                  x="0"
-                  y={-size}
-                  text-anchor="middle"
-                  className={styles.annotation}
-                  transform={'translate(0,' + -size / 25 + ')'}
-                >
-                  {cardinal}
-                </text>
-              </g>
-            );
-          })}
+          <g id="cardinals" style={{ transform: 'rotate(' + (90 + options.rotation) + 'deg)' }}>
+            {cardinals.map((cardinal, idxC) => {
+              return (
+                <g style={{ transform: 'rotate(' + (360 / cardinals.length) * idxC + 'deg)' }}>
+                  <line x1="0" y1="0" x2="0" y2={-size} className={styles.polarlines} />
+                  <g>
+                    <text x="0" y={-size * 1.025} text-anchor="middle" className={styles.annotation}>
+                      {cardinal}
+                    </text>
+                  </g>
+                </g>
+              );
+            })}
+          </g>
         </g>
         {petals.map((petal, idx1) => {
           return (
@@ -170,7 +168,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                     className={`petal${idx2}_${points_on_dir[idx2].length}`}
                     style={{
                       fill: 'transparent',
-                      transform: 'rotate(' + (angle * idx2 - angle / 2 + -90) + 'deg)',
+                      transform: 'rotate(' + (angle * idx2 - angle / 2 + options.rotation) + 'deg)',
                     }}
                     stroke={palette[idx1]}
                     stroke-width={(segment / petal_max_length) * size}

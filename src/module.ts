@@ -62,5 +62,10 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       path: 'windSpeedInterval',
       name: 'Wind Speed Interval',
       defaultValue: 2,
+    })
+    .addNumberInput({
+      path: 'rotation',
+      name: 'Rotate Rose degrees (-90° is North at the top)',
+      defaultValue: -90,
     });
 });
