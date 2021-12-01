@@ -139,14 +139,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           <circle className={styles.polarlines} r={size * 0.2} />
           {cardinals.map((cardinal, idxC) => {
             return (
-              <line
-                x1="0"
-                y1={-size}
-                x2="0"
-                y2={size}
-                className={styles.polarlines}
-                style={{ transform: 'rotate(' + (360 / cardinals.length) * idxC + 'deg)' }}
-              />
+              <g style={{ transform: 'rotate(' + (360 / cardinals.length) * idxC + 'deg)' }}>
+                <line x1="0" y1={-size} x2="0" y2={size} className={styles.polarlines} />
+                <text x="0" y={-size} text-anchor="middle" className={styles.annotation}>
+                  {cardinal}
+                </text>
+              </g>
             );
           })}
         </g>
@@ -195,9 +193,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
               <text
                 x={width * 0.35 + width * 0.055}
                 y={-(height * 0.5) + height * 0.05 * idx3 + height * 0.0285}
-                style={{
-                  fill: 'white',
-                }}
+                className={styles.annotation}
               >
                 {level} ≤ <tspan font-style="italic">v</tspan> &lt; {speed_levels[idx3 + 1]}
               </text>
@@ -243,6 +239,9 @@ const getStyles = stylesFactory(() => {
       stroke: grey;
       stroke-dasharray: 5 5;
       fill: transparent;
+    `,
+    annotation: css`
+      fill: white;
     `,
   };
 });
