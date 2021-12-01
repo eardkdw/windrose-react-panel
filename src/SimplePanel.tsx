@@ -141,7 +141,13 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
             return (
               <g style={{ transform: 'rotate(' + (360 / cardinals.length) * idxC + 'deg)' }}>
                 <line x1="0" y1={-size} x2="0" y2={size} className={styles.polarlines} />
-                <text x="0" y={-size} text-anchor="middle" className={styles.annotation}>
+                <text
+                  x="0"
+                  y={-size}
+                  text-anchor="middle"
+                  className={styles.annotation}
+                  transform={'translate(0,' + -size / 25 + ')'}
+                >
                   {cardinal}
                 </text>
               </g>
