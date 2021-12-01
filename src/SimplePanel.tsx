@@ -2,12 +2,11 @@ import React from 'react';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
 import { css, cx } from 'emotion';
-import { stylesFactory, useTheme } from '@grafana/ui';
+import { stylesFactory } from '@grafana/ui';
 
 interface Props extends PanelProps<SimpleOptions> {}
 
 export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) => {
-  const theme = useTheme();
   const styles = getStyles();
 
   const frame = data.series[0];
@@ -185,15 +184,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       </svg>
 
       <div className={styles.textBox}>
-        {options.showSeriesCount && (
-          <div
-            className={css`
-              font-size: ${theme.typography.size[options.seriesCountSize]};
-            `}
-          >
-            Number of series: {data.series.length}
-          </div>
-        )}
         <div>Text option value: {options.text}</div>
       </div>
       <div className={styles.legend}>
