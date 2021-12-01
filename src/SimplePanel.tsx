@@ -182,31 +182,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
             </g>
           );
         })}
-        <g id="windrose_legend">
-          {speed_levels.slice(0, bin_num).map((level, idx3) => (
-            <g id={`legend_${idx3}`}>
-              <rect
-                x={width * 0.35}
-                y={-(height * 0.5) + height * 0.05 * idx3}
-                width={width * 0.05}
-                height={height * 0.05}
-                style={{
-                  fill: palette[idx3],
-                  strokeWidth: '1',
-                  stroke: 'rgb(0,0,0)',
-                }}
-              />
-              <text
-                x={width * 0.35 + width * 0.055}
-                y={-(height * 0.5) + height * 0.05 * idx3 + height * 0.0285}
-                className={styles.annotation}
-              >
-                {level} ≤ <tspan font-style="italic">v</tspan> &lt; {speed_levels[idx3 + 1]}
-              </text>
-            </g>
-          ))}
-          ;
-        </g>
       </svg>
 
       <div className={styles.textBox}>
@@ -220,6 +195,28 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           </div>
         )}
         <div>Text option value: {options.text}</div>
+      </div>
+      <div className={styles.legend}>
+        <h3>Speed / ms¯¹</h3>
+        {speed_levels.slice(0, bin_num).map((level, level_idx) => {
+          return (
+            <div id={`legend_${level_idx}`} style={{ height: '4ex' }}>
+              <div
+                style={{
+                  backgroundColor: palette[level_idx],
+                  border: 'solid 1px transparent',
+                  height: '100%',
+                  width: '4ex',
+                  display: 'inline-block',
+                }}
+              />
+              <p style={{ display: 'inline-block', height: '100%', verticalAlign: 'middle', paddingLeft: '1em' }}>
+                {level} {level > 0 ? '≤' : '<'} <span style={{ fontStyle: 'italic' }}>v</span> &lt;{' '}
+                {speed_levels[level_idx + 1]}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -248,6 +245,13 @@ const getStyles = stylesFactory(() => {
     `,
     annotation: css`
       fill: white;
+    `,
+    legend: css`
+      text-align: center;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 15%;
     `,
   };
 });
