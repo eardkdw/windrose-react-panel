@@ -1,14 +1,12 @@
-# Grafana Panel Plugin Template
+# Grafana Windrose ReactJS Panel Plugin
 
-[![Build](https://github.com/grafana/grafana-starter-panel/workflows/CI/badge.svg)](https://github.com/grafana/grafana-starter-panel/actions?query=workflow%3A%22CI%22)
+This is a ReactJS Windrose generator. There already is a [Windrose Panel by fatcloud](https://github.com/fatcloud/windrose-panel),
+but it was written in AngularJS. This updates the same concept to React. Some of the logic is based on the Fatcloud panel.
 
-This template is a starting point for building Grafana Panel Plugins in Grafana 7.0+
+## Using
 
-## What is Grafana Panel Plugin?
-
-Panels are the building blocks of Grafana. They allow you to visualize data in different ways. While Grafana has several types of panels already built-in, you can also build your own panel, to add support for other visualizations.
-
-For more information about panels, refer to the documentation on [Panels](https://grafana.com/docs/grafana/latest/features/panels/panels/)
+It requires data with wind angle from North (North is 0°, East is 90°, etc.) and speed (unit-agnostic). The units displayed
+in the legend can be specified. 
 
 ## Getting started
 
@@ -35,6 +33,13 @@ For more information about panels, refer to the documentation on [Panels](https:
    ```bash
    yarn build
    ```
+
+## Development Notes
+
+The SVG viewbox is adjusted so the origin (0,0) is at the centre of the circle plot, with negative points above and positive 
+below for the y-axis. 
+
+All the frequency bins of the graph are SVG circle elements with the `stroke-width` set to bin width and the  `stroke-dasharray` pattern set so that only a wedge shows (see [How to Create an SVG Pie Chart](https://sparkbox.com/foundry/how_to_code_an_SVG_pie_chart)). It is then rotated using SVG transforms to the correct angle.
 
 ## Learn more
 
