@@ -202,15 +202,14 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           return (
             <div id={`legend_${level_idx}`} style={{ height: '4ex' }}>
               <div
-                style={{
-                  backgroundColor: palette[level_idx],
-                  border: 'solid 1px transparent',
-                  height: '100%',
-                  width: '4ex',
-                  display: 'inline-block',
-                }}
+                className={cx(
+                  styles.legendBox,
+                  css`
+                    background-color: ${palette[level_idx]};
+                  `
+                )}
               />
-              <p style={{ display: 'inline-block', height: '100%', verticalAlign: 'middle', paddingLeft: '1em' }}>
+              <p className={styles.legendText}>
                 {level} {level > 0 ? '≤' : '<'} <span style={{ fontStyle: 'italic' }}>v</span> &lt;{' '}
                 {speed_levels[level_idx + 1]}
               </p>
@@ -252,6 +251,18 @@ const getStyles = stylesFactory(() => {
       right: 0;
       top: 0;
       width: 15%;
+    `,
+    legendBox: css`
+      border: solid 1px transparent;
+      height: 100%;
+      width: 4ex;
+      display: inline-block;
+    `,
+    legendText: css`
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      padding-left: 1en;
     `,
   };
 });
