@@ -11,7 +11,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const frame = data.series[0];
 
-
   const theta = frame.fields.find(field => field.name === 'direction');
   const r = frame.fields.find(field => field.name === 'speed');
 
@@ -183,7 +182,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       </svg>
 
       <div className={styles.textBox}>
-        <div>From {dateTimeFormat(data.timeRange.from, { format: 'YYYY-MM-DD HH:mm'})} to {dateTimeFormat(data.timeRange.to, { format: 'YYYY-MM-DD HH:mm'})}</div>
+        <div>
+          From {dateTimeFormat(data.timeRange.from, { format: 'YYYY-MM-DD HH:mm' })} to{' '}
+          {dateTimeFormat(data.timeRange.to, { format: 'YYYY-MM-DD HH:mm' })}
+        </div>
       </div>
       <div className={styles.legend}>
         <h3>Speed / {options.speedUnit}</h3>
