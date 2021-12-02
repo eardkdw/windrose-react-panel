@@ -53,23 +53,26 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   //palette
   let palette: string[] = [];
+  const paletteStep: number = 75 / bin_num;
   switch (options.palette) {
     case 'reds':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('hsl(20,100%,' + (97 * (1 - j / (bin_num - 1))).toString() + '%)');
+        palette.push('hsl(20,100%,' + (95 - paletteStep*j).toString() + '%)');
       }
       break;
     case 'greens':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('hsl(106,51%,' + (92 * (1 - j / (bin_num - 1))).toString() + '%)');
+        palette.push('hsl(106,51%,' + (95 - paletteStep*j).toString() + '%)');
       }
       break;
     case 'blues':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('hsl(210,100%,' + (98 * (1 - j / (bin_num - 1))).toString() + '%)');
+        palette.push('hsl(210,100%,' + (95 - paletteStep*j).toString() + '%)');
       }
       break;
   }
+
+  console.log(palette);
 
   // compute m levels for all n directions (petals is an array of number arrays
   // with bin_num elements, each with numberOfSegments elements)
