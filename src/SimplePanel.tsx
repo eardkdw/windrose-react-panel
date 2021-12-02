@@ -136,12 +136,14 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       >
         <g id="lines">
           <g id="proportionLines">
-            {proportions.map((proportion, proportion_idx) => 
-               <g style={{ transform: 'rotate(' + (-180 / cardinals.length) + 'deg)'}}>
-               <circle className={styles.polarlines} r={size * proportion} />
-               <text x="0" y={size * proportion * 1.025} text-anchor="middle" className={styles.annotation}>{(petal_max_proportion * proportion * 100).toFixed(1)}%</text>
-               </g>
-          )}
+            {proportions.map((proportion, proportion_idx) => (
+              <g style={{ transform: 'rotate(' + -180 / cardinals.length + 'deg)' }}>
+                <circle className={styles.polarlines} r={size * proportion} />
+                <text x="0" y={size * proportion * 1.025} text-anchor="middle" className={styles.annotation}>
+                  {(petal_max_proportion * proportion * 100).toFixed(1)}%
+                </text>
+              </g>
+            ))}
           </g>
           <g id="cardinals" style={{ transform: 'rotate(' + (90 + options.rotation) + 'deg)' }}>
             {cardinals.map((cardinal, idxC) => {
