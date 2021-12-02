@@ -56,17 +56,17 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   switch (options.palette) {
     case 'reds':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('rgb(' + (255 * (1 - j / (bin_num - 1))).toString() + ',0,0)');
+        palette.push('hsl(20,100%,' + (97 * (1 - j / (bin_num - 1))).toString() + '%)');
       }
       break;
     case 'greens':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('rgb(0,' + (255 * (1 - j / (bin_num - 1))).toString() + ',0)');
+        palette.push('hsl(106,51%,' + (92 * (1 - j / (bin_num - 1))).toString() + '%)');
       }
       break;
     case 'blues':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('rgb(0,0,' + (255 * (1 - j / (bin_num - 1))).toString() + ')');
+        palette.push('hsl(210,100%,' + (98 * (1 - j / (bin_num - 1))).toString() + '%)');
       }
       break;
   }
