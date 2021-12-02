@@ -1,5 +1,5 @@
 import React from 'react';
-import { PanelProps } from '@grafana/data';
+import { PanelProps, dateTimeFormat } from '@grafana/data';
 import { SimpleOptions } from 'types';
 import { css, cx } from 'emotion';
 import { stylesFactory } from '@grafana/ui';
@@ -10,6 +10,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   const styles = getStyles();
 
   const frame = data.series[0];
+
 
   const theta = frame.fields.find(field => field.name === 'direction');
   const r = frame.fields.find(field => field.name === 'speed');
@@ -182,7 +183,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       </svg>
 
       <div className={styles.textBox}>
-        <div>Text option value: {options.text}</div>
+        <div>From {dateTimeFormat(data.timeRange.from, { format: 'YYYY-MM-DD HH:mm'})} to {dateTimeFormat(data.timeRange.to, { format: 'YYYY-MM-DD HH:mm'})}</div>
       </div>
       <div className={styles.legend}>
         <h3>Speed / {options.speedUnit}</h3>
