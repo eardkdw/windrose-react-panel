@@ -11,8 +11,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const frame = data.series[0];
 
-  const theta = frame.fields.find(field => field.name === 'windDir');
-  const r = frame.fields.find(field => field.name === 'windSpeed');
+  const theta = frame.fields.find(field => field.name === 'direction');
+  const r = frame.fields.find(field => field.name === 'speed');
 
   //check there are data
   if (!data.series?.length || !theta || !r) {
