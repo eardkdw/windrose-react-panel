@@ -57,22 +57,20 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   switch (options.palette) {
     case 'reds':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('hsl(20,100%,' + (95 - paletteStep*j).toString() + '%)');
+        palette.push('hsl(20,100%,' + (95 - paletteStep * j).toString() + '%)');
       }
       break;
     case 'greens':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('hsl(106,51%,' + (95 - paletteStep*j).toString() + '%)');
+        palette.push('hsl(106,51%,' + (95 - paletteStep * j).toString() + '%)');
       }
       break;
     case 'blues':
       for (let j = 0; j < bin_num; j++) {
-        palette.push('hsl(210,100%,' + (95 - paletteStep*j).toString() + '%)');
+        palette.push('hsl(210,100%,' + (95 - paletteStep * j).toString() + '%)');
       }
       break;
   }
-
-  console.log(palette);
 
   // compute m levels for all n directions (petals is an array of number arrays
   // with bin_num elements, each with numberOfSegments elements)
@@ -118,8 +116,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const cardinals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const proportions = [1, 0.8, 0.6, 0.4, 0.2];
-
-  console.log([petal_max_length, base_lengths]); 
 
   return (
     <div
