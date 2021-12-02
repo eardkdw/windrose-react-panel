@@ -80,12 +80,14 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     let level = options.windSpeedInterval * bin_idx;
     speed_levels.push(level);
   }
-  console.log({ max_speed: max_speed, bin_num: bin_num, speed_levels: speed_levels });
 
   // prepare base lengths
   let base_lengths: number[] = [];
   base_lengths.length = options.numberOfSegments;
   base_lengths.fill(0);
+  let base_proportion: number[] = [];
+  base_proportion.length = options.numberOfSegments;
+  base_proportion.fill(0);
 
   // compute the petal lengths
   for (let bin_idx = 0; bin_idx < bin_num; bin_idx++) {
@@ -100,8 +102,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         }
       }
 
-      let total_length = pts.length / num_points; //proportion of total points in this petal
-      let delta_length = (bin_counter / pts.length) * total_length; //proportion of petal length in this bin
+      base_proportion[angle_idx] = pts.length / num_points; //proportion of total points in this petal
+      let delta_length = (bin_counter / pts.length) * base_proportion[angle_idx]; //proportion of petal length in this bin
       base_lengths[angle_idx] += delta_length;
       //petals[bin_idx].push(base_lengths[angle_idx]);
       petals[bin_idx].push(delta_length);
@@ -109,8 +111,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   }
 
   let petal_max_length = Math.max(...base_lengths);
+  let petal_max_proportion = Math.max(...base_proportion);
 
   const cardinals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const proportions = [1, 0.8, 0.6, 0.4, 0.2];
 
   return (
     <div
@@ -131,11 +135,14 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
       >
         <g id="lines">
-          <circle className={styles.polarlines} r={size} />
-          <circle className={styles.polarlines} r={size * 0.8} />
-          <circle className={styles.polarlines} r={size * 0.6} />
-          <circle className={styles.polarlines} r={size * 0.4} />
-          <circle className={styles.polarlines} r={size * 0.2} />
+          <g id="proportionLines">
+            {proportions.map((proportion, proportion_idx) => 
+               <g style={{ transform: 'rotate(' + (-180 / cardinals.length) + 'deg)'}}>
+               <circle className={styles.polarlines} r={size * proportion} />
+               <text x="0" y={size * proportion * 1.025} text-anchor="middle" className={styles.annotation}>{(petal_max_proportion * proportion * 100).toFixed(1)}%</text>
+               </g>
+          )}
+          </g>
           <g id="cardinals" style={{ transform: 'rotate(' + (90 + options.rotation) + 'deg)' }}>
             {cardinals.map((cardinal, idxC) => {
               return (
