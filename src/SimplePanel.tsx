@@ -48,7 +48,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   }
 
   // find max wind speed and speed levels
-  let max_speed = Math.max(...rs);
+  let max_speed = Math.max(...rs.filter(Number.isFinite));
   let bin_num = Math.ceil(max_speed / options.windSpeedInterval);
 
   //palette
@@ -110,11 +110,13 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     }
   }
 
-  let petal_max_length = Math.max(...base_lengths);
-  let petal_max_proportion = Math.max(...base_proportion);
+  let petal_max_length = Math.max(...base_lengths.filter(Number.isFinite));
+  let petal_max_proportion = Math.max(...base_proportion.filter(Number.isFinite));
 
   const cardinals = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const proportions = [1, 0.8, 0.6, 0.4, 0.2];
+
+  console.log([petal_max_length, base_lengths]); 
 
   return (
     <div
